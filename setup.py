@@ -5,7 +5,7 @@ setup(
     name='colour-runner',
     version='0.0.1',
     description='Colour formatting for unittest tests',
-    url='https://github.com/meshy/unittest-colours',
+    url='https://github.com/meshy/colour-runner',
     author='Charlie "Meshy" Denton',
     author_email='charlie@meshy.co.uk',
     license='MIT',
@@ -19,7 +19,7 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Topic :: Software Development :: Testing',
     ],
-    keywords='unittest colour output color',
+    keywords='unittest colour color output',
     packages=find_packages(),
     install_requires=['blessings', 'pygments'],
 )
