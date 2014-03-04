@@ -4,10 +4,13 @@ from unittest.util import strclass
 from blessings import Terminal
 from pygments import formatters, highlight
 try:
-    basestring  # Very crude check for python 3
-    from pygments.lexers import Python3TracebackLexer as Lexer
-except NameError:
+    # Python 2
+    text_type = unicode
     from pygments.lexers import PythonTracebackLexer as Lexer
+except NameError:
+    # Python 3
+    text_type = str
+    from pygments.lexers import Python3TracebackLexer as Lexer
 
 
 class ColouredTextTestResult(result.TestResult):
@@ -67,7 +70,7 @@ class ColouredTextTestResult(result.TestResult):
             self.stream.write(' ... ')
             self.stream.flush()
 
-    def printResult(self, short, extended, hue=str):
+    def printResult(self, short, extended, hue=text_type):
         if self.showAll:
             self.stream.writeln(hue(extended))
         else:
