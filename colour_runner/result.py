@@ -23,14 +23,19 @@ class ColouredTextTestResult(result.TestResult):
     lexer = Lexer()
     separator1 = '=' * 70
     separator2 = '-' * 70
-    indent = '    '
+    indent = ' ' * 4
 
     _terminal = Terminal()
-    blue = _terminal.blue
-    dim = _terminal.dim
-    green = _terminal.green
-    red = _terminal.bold_red
-    yellow = _terminal.bold_yellow
+    colours = {
+        None: text_type,
+        'error': _terminal.bold_red,
+        'expected': _terminal.blue,
+        'fail': _terminal.bold_yellow,
+        'skip': text_type,
+        'success': _terminal.green,
+        'title': _terminal.blue,
+        'unexpected': _terminal.bold_red,
+    }
 
     _test_class = None
 
@@ -65,41 +70,43 @@ class ColouredTextTestResult(result.TestResult):
         if self.showAll:
             if self._test_class != test.__class__:
                 self._test_class = test.__class__
-                self.stream.writeln(self.blue(self.getClassDescription(test)))
+                title = self.getClassDescription(test)
+                self.stream.writeln(self.colours['title'](title))
             self.stream.write(self.getShortDescription(test))
             self.stream.write(' ... ')
             self.stream.flush()
 
-    def printResult(self, short, extended, hue=text_type):
+    def printResult(self, short, extended, colour_key=None):
+        colour = self.colours[colour_key]
         if self.showAll:
-            self.stream.writeln(hue(extended))
+            self.stream.writeln(colour(extended))
         else:
-            self.stream.write(hue(short))
+            self.stream.write(colour(short))
             self.stream.flush()
 
     def addSuccess(self, test):
         super(ColouredTextTestResult, self).addSuccess(test)
-        self.printResult('.', 'ok', self.green)
+        self.printResult('.', 'ok', 'success')
 
     def addError(self, test, err):
         super(ColouredTextTestResult, self).addError(test, err)
-        self.printResult('E', 'ERROR', self.red)
+        self.printResult('E', 'ERROR', 'error')
 
     def addFailure(self, test, err):
         super(ColouredTextTestResult, self).addFailure(test, err)
-        self.printResult('F', 'FAIL', self.yellow)
+        self.printResult('F', 'FAIL', 'fail')
 
     def addSkip(self, test, reason):
         super(ColouredTextTestResult, self).addSkip(test, reason)
-        self.printResult('s', 'skipped {0!r}'.format(reason))
+        self.printResult('s', 'skipped {0!r}'.format(reason), 'skip')
 
     def addExpectedFailure(self, test, err):
         super(ColouredTextTestResult, self).addExpectedFailure(test, err)
-        self.printResult('x', 'expected failure', self.green)
+        self.printResult('x', 'expected failure', 'expected')
 
     def addUnexpectedSuccess(self, test):
         super(ColouredTextTestResult, self).addUnexpectedSuccess(test)
-        self.printResult('u', 'unexpected success', self.red)
+        self.printResult('u', 'unexpected success', 'unexpected')
 
     def printErrors(self):
         if self.dots or self.showAll:
@@ -108,11 +115,11 @@ class ColouredTextTestResult(result.TestResult):
         self.printErrorList('FAIL', self.failures)
 
     def printErrorList(self, flavour, errors):
-        colours = {'ERROR': self.red, 'FAIL': self.yellow}
+        colour = self.colours[flavour.lower()]
 
         for test, err in errors:
             self.stream.writeln(self.separator1)
             title = "%s: %s" % (flavour, self.getLongDescription(test))
-            self.stream.writeln(colours[flavour](title))
-            self.stream.writeln(self.dim(self.separator2))
+            self.stream.writeln(colour(title))
+            self.stream.writeln(self.separator2)
             self.stream.writeln(highlight(err, self.lexer, self.formatter))
