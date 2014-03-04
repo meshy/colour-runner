@@ -119,7 +119,7 @@ class ColourTextTestResult(result.TestResult):
 
         for test, err in errors:
             self.stream.writeln(self.separator1)
-            title = "%s: %s" % (flavour, self.getLongDescription(test))
+            title = '%s: %s' % (flavour, self.getLongDescription(test))
             self.stream.writeln(colour(title))
             self.stream.writeln(self.separator2)
             self.stream.writeln(highlight(err, self.lexer, self.formatter))
