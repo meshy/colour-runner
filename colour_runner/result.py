@@ -1,4 +1,5 @@
 from unittest import result
+from unittest.util import strclass
 
 from blessings import Terminal
 from pygments import formatters, highlight
@@ -19,12 +20,16 @@ class ColouredTextTestResult(result.TestResult):
     lexer = Lexer()
     separator1 = '=' * 70
     separator2 = '-' * 70
+    indent = '    '
 
     _terminal = Terminal()
+    blue = _terminal.blue
     dim = _terminal.dim
     green = _terminal.green
-    red = _terminal.red
-    yellow = _terminal.yellow
+    red = _terminal.bold_red
+    yellow = _terminal.bold_yellow
+
+    _test_class = None
 
     def __init__(self, stream, descriptions, verbosity):
         super(ColouredTextTestResult, self).__init__(stream, descriptions, verbosity)
@@ -33,17 +38,32 @@ class ColouredTextTestResult(result.TestResult):
         self.dots = verbosity == 1
         self.descriptions = descriptions
 
-    def getDescription(self, test):
+    def getShortDescription(self, test):
+        doc_first_line = test.shortDescription()
+        if self.descriptions and doc_first_line:
+            return self.indent + doc_first_line
+        return self.indent + test._testMethodName
+
+    def getLongDescription(self, test):
         doc_first_line = test.shortDescription()
         if self.descriptions and doc_first_line:
             return '\n'.join((str(test), doc_first_line))
-        else:
-            return str(test)
+        return str(test)
+
+    def getClassDescription(self, test):
+        test_class = test.__class__
+        doc = test_class.__doc__
+        if self.descriptions and doc:
+            return doc.split('\n')[0].strip()
+        return strclass(test_class)
 
     def startTest(self, test):
         super(ColouredTextTestResult, self).startTest(test)
         if self.showAll:
-            self.stream.write(self.getDescription(test))
+            if self._test_class != test.__class__:
+                self._test_class = test.__class__
+                self.stream.writeln(self.blue(self.getClassDescription(test)))
+            self.stream.write(self.getShortDescription(test))
             self.stream.write(' ... ')
             self.stream.flush()
 
@@ -106,7 +126,7 @@ class ColouredTextTestResult(result.TestResult):
 
         for test, err in errors:
             self.stream.writeln(self.separator1)
-            title = "%s: %s" % (flavour, self.getDescription(test))
+            title = "%s: %s" % (flavour, self.getLongDescription(test))
             self.stream.writeln(colours[flavour](title))
             self.stream.writeln(self.dim(self.separator2))
             self.stream.writeln(highlight(err, self.lexer, self.formatter))
