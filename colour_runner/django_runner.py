@@ -1,8 +1,8 @@
-from .runner import ColouredTextTestRunner
+from .runner import ColourTextTestRunner
 
 
 class ColourRunnerMixin(object):
-    test_runner = ColouredTextTestRunner
+    test_runner = ColourTextTestRunner
 
     def run_suite(self, suite, **kwargs):
         """This is the version from Django 1.7."""

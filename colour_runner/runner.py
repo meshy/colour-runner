@@ -1,8 +1,8 @@
 from unittest import runner
 
-from .result import ColouredTextTestResult
+from .result import ColourTextTestResult
 
 
-class ColouredTextTestRunner(runner.TextTestRunner):
+class ColourTextTestRunner(runner.TextTestRunner):
     """A test runner that uses colour in its output"""
-    resultclass = ColouredTextTestResult
+    resultclass = ColourTextTestResult

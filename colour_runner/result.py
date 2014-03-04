@@ -13,7 +13,7 @@ except NameError:
     from pygments.lexers import Python3TracebackLexer as Lexer
 
 
-class ColouredTextTestResult(result.TestResult):
+class ColourTextTestResult(result.TestResult):
     """
     A test result class that prints colour formatted text results to a stream.
 
@@ -40,7 +40,7 @@ class ColouredTextTestResult(result.TestResult):
     _test_class = None
 
     def __init__(self, stream, descriptions, verbosity):
-        super(ColouredTextTestResult, self).__init__(stream, descriptions, verbosity)
+        super(ColourTextTestResult, self).__init__(stream, descriptions, verbosity)
         self.stream = stream
         self.showAll = verbosity > 1
         self.dots = verbosity == 1
@@ -66,7 +66,7 @@ class ColouredTextTestResult(result.TestResult):
         return strclass(test_class)
 
     def startTest(self, test):
-        super(ColouredTextTestResult, self).startTest(test)
+        super(ColourTextTestResult, self).startTest(test)
         if self.showAll:
             if self._test_class != test.__class__:
                 self._test_class = test.__class__
@@ -85,27 +85,27 @@ class ColouredTextTestResult(result.TestResult):
             self.stream.flush()
 
     def addSuccess(self, test):
-        super(ColouredTextTestResult, self).addSuccess(test)
+        super(ColourTextTestResult, self).addSuccess(test)
         self.printResult('.', 'ok', 'success')
 
     def addError(self, test, err):
-        super(ColouredTextTestResult, self).addError(test, err)
+        super(ColourTextTestResult, self).addError(test, err)
         self.printResult('E', 'ERROR', 'error')
 
     def addFailure(self, test, err):
-        super(ColouredTextTestResult, self).addFailure(test, err)
+        super(ColourTextTestResult, self).addFailure(test, err)
         self.printResult('F', 'FAIL', 'fail')
 
     def addSkip(self, test, reason):
-        super(ColouredTextTestResult, self).addSkip(test, reason)
+        super(ColourTextTestResult, self).addSkip(test, reason)
         self.printResult('s', 'skipped {0!r}'.format(reason), 'skip')
 
     def addExpectedFailure(self, test, err):
-        super(ColouredTextTestResult, self).addExpectedFailure(test, err)
+        super(ColourTextTestResult, self).addExpectedFailure(test, err)
         self.printResult('x', 'expected failure', 'expected')
 
     def addUnexpectedSuccess(self, test):
-        super(ColouredTextTestResult, self).addUnexpectedSuccess(test)
+        super(ColourTextTestResult, self).addUnexpectedSuccess(test)
         self.printResult('u', 'unexpected success', 'unexpected')
 
     def printErrors(self):
