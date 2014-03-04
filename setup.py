@@ -6,7 +6,7 @@ setup(
     version='0.0.1',
     description='Colour formatting for unittest tests',
     url='https://github.com/meshy/colour-runner',
-    author='Charlie "Meshy" Denton',
+    author='Charlie Denton',
     author_email='charlie@meshy.co.uk',
     license='MIT',
     classifiers=[
