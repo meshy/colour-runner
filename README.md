@@ -22,4 +22,7 @@ Point django at it in `settings.py`:
 
 ### Other Python
 
-Simply use `colour_runner.runner.ColouredTextTestRunner` where you would normally use `unittest.TextTestRunner`.
+Where you would normally use:
+
+* `unittest.TextTestRunner`, use `colour_runner.runner.ColourTextTestRunner`.
+* `unittest.TextTestResult`, use `colour_runner.result.ColourTextTestResult`.
