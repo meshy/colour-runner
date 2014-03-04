@@ -67,53 +67,36 @@ class ColouredTextTestResult(result.TestResult):
             self.stream.write(' ... ')
             self.stream.flush()
 
+    def printResult(self, short, extended, hue=str):
+        if self.showAll:
+            self.stream.writeln(hue(extended))
+        else:
+            self.stream.write(hue(short))
+            self.stream.flush()
+
     def addSuccess(self, test):
         super(ColouredTextTestResult, self).addSuccess(test)
-        if self.showAll:
-            self.stream.writeln(self.green('ok'))
-        elif self.dots:
-            self.stream.write(self.green('.'))
-            self.stream.flush()
+        self.printResult('.', 'ok', self.green)
 
     def addError(self, test, err):
         super(ColouredTextTestResult, self).addError(test, err)
-        if self.showAll:
-            self.stream.writeln(self.red('ERROR'))
-        elif self.dots:
-            self.stream.write(self.red('E'))
-            self.stream.flush()
+        self.printResult('E', 'ERROR', self.red)
 
     def addFailure(self, test, err):
         super(ColouredTextTestResult, self).addFailure(test, err)
-        if self.showAll:
-            self.stream.writeln(self.yellow('FAIL'))
-        elif self.dots:
-            self.stream.write(self.yellow('F'))
-            self.stream.flush()
+        self.printResult('F', 'FAIL', self.yellow)
 
     def addSkip(self, test, reason):
         super(ColouredTextTestResult, self).addSkip(test, reason)
-        if self.showAll:
-            self.stream.writeln('skipped {0!r}'.format(reason))
-        elif self.dots:
-            self.stream.write('s')
-            self.stream.flush()
+        self.printResult('s', 'skipped {0!r}'.format(reason))
 
     def addExpectedFailure(self, test, err):
         super(ColouredTextTestResult, self).addExpectedFailure(test, err)
-        if self.showAll:
-            self.stream.writeln(self.green('expected failure'))
-        elif self.dots:
-            self.stream.write(self.green('x'))
-            self.stream.flush()
+        self.printResult('x', 'expected failure', self.green)
 
     def addUnexpectedSuccess(self, test):
         super(ColouredTextTestResult, self).addUnexpectedSuccess(test)
-        if self.showAll:
-            self.stream.writeln(self.red('unexpected success'))
-        elif self.dots:
-            self.stream.write(self.red('u'))
-            self.stream.flush()
+        self.printResult('u', 'unexpected success', self.red)
 
     def printErrors(self):
         if self.dots or self.showAll:
