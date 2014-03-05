@@ -80,7 +80,7 @@ class ColourTextTestResult(result.TestResult):
         colour = self.colours[colour_key]
         if self.showAll:
             self.stream.writeln(colour(extended))
-        else:
+        elif self.dots:
             self.stream.write(colour(short))
             self.stream.flush()
 
