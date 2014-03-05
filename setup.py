@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='colour-runner',
-    version='0.0.1',
+    version='0.0.2',
     description='Colour formatting for unittest tests',
     url='https://github.com/meshy/colour-runner',
     author='Charlie Denton',
