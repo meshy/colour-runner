@@ -62,7 +62,7 @@ class ColourTextTestResult(result.TestResult):
         test_class = test.__class__
         doc = test_class.__doc__
         if self.descriptions and doc:
-            return doc.split('\n')[0].strip()
+            return doc.strip().split('\n')[0].strip()
         return strclass(test_class)
 
     def startTest(self, test):
