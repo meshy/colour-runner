@@ -39,12 +39,13 @@ class ColourTextTestResult(result.TestResult):
 
     _test_class = None
 
-    def __init__(self, stream, descriptions, verbosity):
+    def __init__(self, stream, descriptions, verbosity, no_colour=False):
         super(ColourTextTestResult, self).__init__(stream, descriptions, verbosity)
         self.stream = stream
         self.showAll = verbosity > 1
         self.dots = verbosity == 1
         self.descriptions = descriptions
+        self.no_colour = no_colour
 
     def getShortDescription(self, test):
         doc_first_line = test.shortDescription()
@@ -77,7 +78,10 @@ class ColourTextTestResult(result.TestResult):
             self.stream.flush()
 
     def printResult(self, short, extended, colour_key=None):
-        colour = self.colours[colour_key]
+        if self.no_colour:
+            colour = self.colours[None]
+        else:
+            colour = self.colours[colour_key]
         if self.showAll:
             self.stream.writeln(colour(extended))
         elif self.dots:
