@@ -119,11 +119,17 @@ class ColourTextTestResult(result.TestResult):
         self.printErrorList('FAIL', self.failures)
 
     def printErrorList(self, flavour, errors):
-        colour = self.colours[flavour.lower()]
+        if self.no_colour:
+            colour = self.colours[None]
+        else:
+            colour = self.colours[flavour.lower()]
 
         for test, err in errors:
             self.stream.writeln(self.separator1)
             title = '%s: %s' % (flavour, self.getLongDescription(test))
             self.stream.writeln(colour(title))
             self.stream.writeln(self.separator2)
-            self.stream.writeln(highlight(err, self.lexer, self.formatter))
+            if self.no_colour:
+                self.stream.writeln(err)
+            else:
+                self.stream.writeln(highlight(err, self.lexer, self.formatter))
