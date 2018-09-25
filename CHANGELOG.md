@@ -1,5 +1,9 @@
 # Change log for `colour-runner`
 
+## 0.1.0
+
+- ADDED: Support for disabling coloured output without uninstalling.
+
 ## 0.0.5
 
 - FIXED: Multiline test class docstrings were displayed as blank strings.
