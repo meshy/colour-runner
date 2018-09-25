@@ -20,6 +20,10 @@ Point django at it in `settings.py`:
 
     TEST_RUNNER = 'project.runner.MyTestRunner'
 
+You can also disable colour runner for an individual test run with Django's `--no-color` flag:
+
+    manage.py test --no-color
+
 ### Other Python
 
 Where you would normally use:
