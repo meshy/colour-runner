@@ -1,6 +1,6 @@
 # Change log for `colour-runner`
 
-## 0.1.1 [Unreleased]
+## 0.1.1 [5 October 2018]
 
 - FIXED: The `no_color` shouldn't be required when using `ColourRunnerMixin`.
 
