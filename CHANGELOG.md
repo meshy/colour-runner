@@ -1,5 +1,9 @@
 # Change log for `colour-runner`
 
+## 0.1.1 [Unreleased]
+
+- FIXED: The `no_color` shouldn't be required when using `ColourRunnerMixin`.
+
 ## 0.1.0
 
 - ADDED: Support for disabling coloured output without uninstalling.

@@ -5,7 +5,7 @@ class ColourRunnerMixin(object):
     test_runner = ColourTextTestRunner
 
     def __init__(self, *args, **kwargs):
-        self.no_colour = kwargs['no_color']
+        self.no_colour = kwargs.get('no_color', False)
         super(ColourRunnerMixin, self).__init__(*args, **kwargs)
 
     def run_suite(self, suite, **kwargs):
